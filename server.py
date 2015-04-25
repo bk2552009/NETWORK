@@ -21,9 +21,10 @@ def ServerFunction(name, sock, addr):
                             sock.send(bytesTosend)
                         print "Client has downloaded " + fileToDownload
         elif getfilemode == "uploadmode":
-            filesize = sock.recv(1024) #recv 1.5
             filename = sock.recv(1024) #recv 2
             cutfilename = os.path.split(filename)
+            filesize = sock.recv(1024) #recv 1.5
+            #filename = sock.recv(1024) #recv 2
             f = open('new_ul_'+cutfilename[1], 'wb') #file extendsion is gone!!! NOT FIX YET
             data = sock.recv(1024) #recv 3
             totalRecv = len(data)
@@ -57,7 +58,7 @@ def ServerFunction(name, sock, addr):
     sock.close()
 
 def Main():
-    host = "127.0.0.1"
+    host = ""
     port = 5000
     s = socket.socket()
     s.bind((host, port))

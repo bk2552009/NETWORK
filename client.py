@@ -5,7 +5,7 @@ import os
 from os import path
 
 
-host = '127.0.0.1'
+host = '192.168.1.38'
 port = 5000
 s = socket.socket()
 s.connect((host, port))
@@ -31,9 +31,8 @@ while True:
         s.send(command) #send 2
         filecount = s.recv(1024)
         print "Files list from server"
-        for i in range(0, int(filecount)):
-            fileFromServer = s.recv(1024)
-            print fileFromServer
+        fileFromServer = s.recv(1024)
+        print "- " + fileFromServer
 
     elif command[:3] == 'get': #get command
         s.send(command)
@@ -60,20 +59,20 @@ while True:
             print "File doesn't exist!"
     elif command[:3] == 'put': #get command #s.send(command)
         s.send('uploadmode') #send 1
+        s.send(command) #send 2
         filepath = command.split( )
         filepath = filepath.pop()
         fileToUpload = filepath
         if os.path.isfile(fileToUpload):
             uploadSize = os.path.getsize(fileToUpload)
             s.send(str(uploadSize)) #send1.5
-            s.send(command) #send 2
+            #s.send(command) #send 2
             message = raw_input("File Exists! " + str(uploadSize) + " Bytes, upload? "
                                                                     "Y/N? -> ")
             if message == 'Y':
                 with open(fileToUpload, 'rb') as f:
                     bytesToSend = f.read(1024)
-                    s.send(bytesToSend) #send
-                    totalSend = bytesToSend
+                    s.send(bytesToSend) #send3
                     while bytesToSend != "":
                         bytesToSend = f.read(1024)
                         s.send(bytesToSend)
