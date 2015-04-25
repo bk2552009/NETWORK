@@ -24,6 +24,8 @@ def ServerFunction(name, sock, addr):
             filename = sock.recv(1024) #recv 2
             cutfilename = os.path.split(filename)
             filesize = sock.recv(1024) #recv 1.5
+            filesize.encode('utf-8','strict')
+            #convertFileSize = unicode(filesize,"utf-8")
             #filename = sock.recv(1024) #recv 2
             f = open('new_ul_'+cutfilename[1], 'wb') #file extendsion is gone!!! NOT FIX YET
             data = sock.recv(1024) #recv 3
